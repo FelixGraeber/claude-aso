@@ -3,28 +3,46 @@ name: aso-audit
 description: >
   Full app listing audit with parallel subagent delegation. Scores listing
   across 7 categories (0-100), flags problems, generates prioritized action plan.
-  Triggers on: "audit", "full ASO check", "analyze my app", "listing health check".
+  Works in local mode (auto-detect Fastlane/Xcode/Gradle metadata) or remote
+  mode (fetch live listing by app ID). Triggers on: "audit", "full ASO check",
+  "analyze my app", "listing health check".
 user-invokable: true
-argument-hint: "<app-id-or-url> [--country CODE]"
+argument-hint: "[app-id-or-url] [--country CODE]"
 ---
 
 # ASO Audit — Full Listing Analysis
 
 Comprehensive app listing audit that spawns 7-9 specialized subagents in parallel.
 
+## Modes
+
+| Mode | Trigger | Data Source |
+|------|---------|-------------|
+| **Local** | `/aso audit` (no args) | Fastlane metadata, Xcode project, Gradle project |
+| **Remote** | `/aso audit <app-id>` | Live App Store / Google Play listing |
+| **Compare** | `/aso audit --compare <app-id>` | Both local + remote, shows diff |
+
 ## Process
 
-### Step 1: Fetch & Parse (sequential)
+### Step 1: Get Metadata (sequential)
+
+**If no app ID provided (local mode):**
+```bash
+uv run python scripts/detect_project.py --json
+```
+This scans the working directory for Fastlane metadata (`fastlane/metadata/`), Xcode project (`.xcodeproj`), or Gradle project (`app/build.gradle`). If Fastlane metadata is found, all store fields are available. If only Xcode/Gradle is found, extract the app/bundle ID and offer to fetch the live listing.
+
+**If app ID provided (remote mode):**
 ```bash
 uv run python scripts/fetch_listing.py <app-id> --country us --json
 ```
-Parse result into structured listing data. If Android, also run:
-```bash
-uv run python scripts/parse_listing.py --stdin --json
-```
+For Android, also pipe through `parse_listing.py`.
+
+**If --compare flag (compare mode):**
+Run both detect_project.py AND fetch_listing.py, then diff the results.
 
 ### Step 2: Platform & Category Detection (sequential)
-- Detect iOS vs Android from app ID format
+- Detect iOS vs Android from project type or app ID format
 - Classify category from listing metadata (Gaming, SaaS, Health, E-commerce, Social, Fintech, Other)
 - Load category-specific benchmarks
 

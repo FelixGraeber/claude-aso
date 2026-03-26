@@ -31,7 +31,8 @@ All commands start with `/aso`. Run `/aso` for the full command table.
 
 ## Key Principles
 
-1. **Platform-aware**: Every analysis distinguishes iOS vs Android rules
-2. **Parallel execution**: Full audits spawn 7-9 subagents simultaneously
-3. **Progressive disclosure**: Metadata always loaded, references on demand
-4. **Quality gates**: Hard rules prevent bad recommendations (no keyword stuffing, respect char limits)
+1. **Local-first**: `/aso audit` with no args auto-detects Fastlane metadata, Xcode, or Gradle in the working directory
+2. **Platform-aware**: Every analysis distinguishes iOS vs Android rules
+3. **Parallel execution**: Full audits spawn 7-9 subagents simultaneously
+4. **Progressive disclosure**: Metadata always loaded, references on demand
+5. **Quality gates**: Hard rules prevent bad recommendations (no keyword stuffing, respect char limits)

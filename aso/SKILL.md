@@ -11,40 +11,69 @@ argument-hint: "[command] [app-id-or-url]"
 
 # ASO — App Store Optimization Skill
 
-Comprehensive ASO analysis for iOS App Store and Google Play apps. Platform-aware: automatically detects iOS vs Android from the app ID format and applies platform-specific rules.
+Comprehensive ASO analysis for iOS App Store and Google Play apps. Works in two modes:
+
+1. **Local mode** (default): Run `/aso audit` inside an app project — auto-detects Fastlane metadata, Xcode project, or Gradle project and audits your pre-submission metadata.
+2. **Remote mode**: Run `/aso audit <app-id>` with an app ID or store URL — fetches and audits the live listing. Also works for competitor apps.
 
 ## Quick Reference
 
 | Command | What it does |
 |---------|-------------|
-| `/aso audit <app-id>` | Full listing audit — 7-9 parallel agents, health score 0-100 |
+| `/aso audit` | Auto-detect local project and audit its metadata |
+| `/aso audit <app-id>` | Audit a live listing by app ID or store URL |
+| `/aso audit --compare <app-id>` | Audit local metadata AND compare against live listing |
 | `/aso keywords <seeds>` | Keyword research — difficulty, volume, placement strategy |
-| `/aso metadata <app-id>` | Metadata optimization — per-field scoring, rewrite suggestions |
-| `/aso visuals <app-id>` | Visual assets — screenshots, icon, preview video analysis |
+| `/aso metadata` | Optimize local metadata (or `/aso metadata <app-id>` for remote) |
+| `/aso visuals` | Analyze local screenshots (or `/aso visuals <app-id>` for remote) |
 | `/aso reviews <app-id>` | Reviews — sentiment analysis, response templates, keyword extraction |
 | `/aso competitors <app-id>` | Competitor analysis — keyword gaps, metadata comparison |
-| `/aso localization <app-id>` | Localization — per-locale keyword research, cultural adaptation |
+| `/aso localization` | Audit local locale coverage (or `/aso localization <app-id>`) |
 | `/aso ab-testing <app-id>` | A/B testing — iOS PPO / Android experiment design |
 | `/aso technical <app-id>` | Technical ASO — Android Vitals, app size, crashes, update cadence |
 | `/aso conversion <app-id>` | Conversion — install rate benchmarking, first-impression audit |
 | `/aso plan <category>` | Strategic plan — 4-phase roadmap with category templates |
-| `/aso launch <app-id>` | Launch — pre-launch checklist, soft launch, day-1 strategy |
+| `/aso launch` | Launch — pre-launch checklist using local project state |
 | `/aso seasonal <app-id>` | Seasonal — trending keyword opportunities, holiday calendar |
 
-## Platform Detection
+## Auto-Detection (Local Mode)
 
-Automatically detect platform from input:
+When no app ID is provided, run project detection first:
+```bash
+uv run python scripts/detect_project.py --json
+```
+
+This scans the current directory for:
+
+| Source | What it detects | Files checked |
+|--------|----------------|---------------|
+| **Fastlane iOS** | Store metadata per locale (name, subtitle, keywords, description) | `fastlane/metadata/{locale}/name.txt`, `subtitle.txt`, `keywords.txt`, etc. |
+| **Fastlane Android** | Store metadata per locale (title, short/full description) | `fastlane/metadata/android/{locale}/title.txt`, `full_description.txt`, etc. |
+| **Xcode project** | Bundle ID, app name | `*.xcodeproj/project.pbxproj`, `Info.plist` |
+| **Gradle project** | Application ID, app name | `app/build.gradle`, `AndroidManifest.xml`, `res/values/strings.xml` |
+
+Priority: Fastlane metadata (richest data) > Xcode/Gradle (basic identifiers only).
+
+If Fastlane metadata is found, all fields are available for validation, keyword analysis, and optimization. If only Xcode/Gradle is found, extract the app ID and optionally fetch the live listing for a full audit.
+
+## Remote Mode
+
+When an app ID or URL is provided, fetch the live listing:
+
 - **iOS**: Numeric ID (`id284882215`), Apple App Store URL (`apps.apple.com/...`)
 - **Android**: Package name (`com.whatsapp`), Google Play URL (`play.google.com/store/apps/details?id=...`)
-- **Both**: When user provides both IDs or asks for cross-platform analysis
-- **Ambiguous**: Ask user to specify platform
-
-## App ID Formats
 
 ```
 iOS:     id284882215  OR  https://apps.apple.com/app/id284882215
 Android: com.whatsapp  OR  https://play.google.com/store/apps/details?id=com.whatsapp
 ```
+
+## Compare Mode
+
+`/aso audit --compare <app-id>` audits BOTH local metadata and the live listing, then shows:
+- Fields that differ between local and live
+- Whether local changes would improve or regress the score
+- Pre-submission validation of pending metadata changes
 
 ## Category Detection
 

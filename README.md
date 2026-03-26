@@ -6,6 +6,8 @@ Inspired by [AgriciDaniel/claude-seo](https://github.com/AgriciDaniel/claude-seo
 
 ## Features
 
+- **Local-first**: run `/aso audit` inside your app project — auto-detects Fastlane metadata, Xcode, or Gradle and audits pre-submission metadata
+- **Remote audit**: run `/aso audit <app-id>` to audit any live listing or competitor
 - **13 specialized sub-skills**: keywords, metadata, visuals, reviews, competitors, localization, A/B testing, technical, conversion, planning, launch, seasonal
 - **9 parallel subagents**: full audit spawns agents simultaneously for fast analysis
 - **Platform-aware**: auto-detects iOS vs Android, applies correct rules (character limits, indexing behavior, A/B testing capabilities)
@@ -23,29 +25,46 @@ bash install.sh
 Then in Claude Code:
 
 ```
-/aso audit id284882215          # Full iOS audit
-/aso audit com.whatsapp         # Full Android audit
+/aso audit                      # Auto-detect local project metadata
+/aso audit id284882215          # Audit live iOS listing (Facebook)
+/aso audit com.whatsapp         # Audit live Android listing
+/aso audit --compare id123      # Compare local metadata vs live listing
 /aso keywords "habit tracker"   # Keyword research
-/aso metadata id284882215       # Metadata optimization
+/aso metadata                   # Optimize local metadata
 ```
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/aso audit <app-id>` | Full listing audit with health score |
+| `/aso audit` | Auto-detect local project and audit its metadata |
+| `/aso audit <app-id>` | Audit a live listing by app ID or store URL |
+| `/aso audit --compare <app-id>` | Compare local metadata vs live listing |
 | `/aso keywords <seeds>` | Keyword research and placement strategy |
-| `/aso metadata <app-id>` | Metadata field analysis and rewrites |
-| `/aso visuals <app-id>` | Screenshot, icon, video analysis |
+| `/aso metadata` | Optimize local metadata (or remote with app ID) |
+| `/aso visuals` | Analyze local screenshots (or remote with app ID) |
 | `/aso reviews <app-id>` | Review sentiment and response strategy |
 | `/aso competitors <app-id>` | Competitor gap analysis |
-| `/aso localization <app-id>` | Multi-locale optimization |
+| `/aso localization` | Audit local locale coverage |
 | `/aso ab-testing <app-id>` | A/B test design |
 | `/aso technical <app-id>` | Technical health check |
 | `/aso conversion <app-id>` | Conversion rate optimization |
 | `/aso plan <category>` | Strategic ASO roadmap |
-| `/aso launch <app-id>` | Launch strategy |
+| `/aso launch` | Pre-launch checklist using local project state |
 | `/aso seasonal <app-id>` | Seasonal keyword calendar |
+
+## Local Project Detection
+
+When no app ID is provided, `detect_project.py` scans the working directory:
+
+| Source | Detected | Files |
+|--------|----------|-------|
+| Fastlane iOS | Name, subtitle, keywords, description per locale | `fastlane/metadata/{locale}/*.txt` |
+| Fastlane Android | Title, short/full description per locale | `fastlane/metadata/android/{locale}/*.txt` |
+| Xcode | Bundle ID, app name | `*.xcodeproj`, `Info.plist` |
+| Gradle | Application ID, app name | `app/build.gradle`, `AndroidManifest.xml` |
+
+Fastlane metadata provides the richest data (all store fields, all locales). Xcode/Gradle provide only identifiers — the tool will offer to fetch the live listing for a full audit.
 
 ## Architecture
 
