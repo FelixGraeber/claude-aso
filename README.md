@@ -1,6 +1,6 @@
-# Claude ASO — App Store Optimization for Claude Code
+# Claude ASO — App Store Optimization for AI Agents
 
-Comprehensive App Store Optimization skill for Claude Code. Analyzes iOS App Store and Google Play listings using parallel subagents across 7 categories, producing an ASO Health Score (0-100) and prioritized action plan.
+Comprehensive App Store Optimization skill for Claude Code, Codex, Cursor, and any AI agent that supports skills. Analyzes iOS App Store and Google Play listings using parallel subagents across 7 categories, producing an ASO Health Score (0-100) and prioritized action plan.
 
 Inspired by [AgriciDaniel/claude-seo](https://github.com/AgriciDaniel/claude-seo) — adapted from SEO website analysis to ASO mobile app optimization with the same parallel subagent architecture.
 
@@ -16,13 +16,21 @@ Inspired by [AgriciDaniel/claude-seo](https://github.com/AgriciDaniel/claude-seo
 
 ## Quick Start
 
+The easiest way: point your AI agent at this repo and ask it to set it up.
+
+```
+Install https://github.com/felixgraeber/claude-aso and run an ASO audit on my app
+```
+
+Or install manually:
+
 ```bash
 git clone https://github.com/felixgraeber/claude-aso.git
 cd claude-aso
 bash install.sh
 ```
 
-Then in Claude Code:
+Then in Claude Code / Codex / Cursor:
 
 ```
 /aso audit                      # Auto-detect local project metadata
@@ -101,7 +109,7 @@ The audit produces a weighted ASO Health Score:
 ## Requirements
 
 - Python 3.12+
-- Claude Code CLI
+- An AI agent that supports skills: [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Codex](https://openai.com/index/introducing-codex/), [Cursor](https://cursor.com), or any Agent Skills-compatible tool
 - Optional: Playwright for visual analysis
 
 ## License
