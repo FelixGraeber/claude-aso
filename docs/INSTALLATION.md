@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Python 3.12+
-- Claude Code CLI installed
+- A skill-compatible agent runtime
 - Git
 
 ## Quick Install (Unix/macOS)
@@ -12,6 +12,12 @@
 git clone https://github.com/felixgraeber/claude-aso.git
 cd claude-aso
 bash install.sh
+```
+
+By default the installer uses `~/.claude/skills` and `~/.claude/agents`. Override them if your runtime uses different directories:
+
+```bash
+SKILLS_HOME="$HOME/.codex/skills" AGENTS_HOME="$HOME/.codex/agents" bash install.sh
 ```
 
 ## Quick Install (Windows)
@@ -25,14 +31,14 @@ cd claude-aso
 ## What the installer does
 
 1. Checks Python 3.12+ is available
-2. Creates `~/.claude/skills/aso/` and `~/.claude/agents/`
+2. Creates the configured skills and agents directories
 3. Copies main skill, sub-skills, agents, references, and scripts
 4. Installs Python dependencies (beautifulsoup4, requests, lxml, urllib3)
 5. Optionally installs Playwright for screenshot analysis
 
 ## Verify Installation
 
-In Claude Code, type:
+In your agent runtime, invoke:
 ```
 /aso
 ```
@@ -64,7 +70,7 @@ Requires Apple Developer Program membership and API key.
 ## Directory Structure After Install
 
 ```
-~/.claude/
+<skills-home parent>/
 ├── skills/
 │   ├── aso/              # Main skill + references + scripts
 │   ├── aso-audit/        # Sub-skills
@@ -79,6 +85,6 @@ Requires Apple Developer Program membership and API key.
 
 ## Troubleshooting
 
-- **Skills not appearing**: Verify files are in `~/.claude/skills/` and `~/.claude/agents/`
+- **Skills not appearing**: Verify files are in your configured skills and agents directories
 - **Python errors**: Ensure Python 3.12+ is installed and dependencies are available
 - **Fetch errors**: Check network connectivity and app ID format

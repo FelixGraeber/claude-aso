@@ -26,6 +26,11 @@ try:
 except ImportError:
     HAS_PIL = False
 
+try:
+    from scripts.network_security import validate_remote_url
+except ModuleNotFoundError:
+    from network_security import validate_remote_url
+
 
 IOS_SCREENSHOT_SPECS = {
     "iPhone 6.9": {"width": 1320, "height": 2868},
@@ -40,6 +45,9 @@ ANDROID_SCREENSHOT_SPECS = {
     "phone_min": {"width": 320, "height": 320},
     "phone_max": {"width": 3840, "height": 3840},
 }
+
+MAX_DOWNLOAD_BYTES = 20 * 1024 * 1024
+SUPPORTED_CONTENT_TYPES = {"image/jpeg", "image/png", "image/webp"}
 
 
 def analyze_screenshot_url(url: str) -> dict:
@@ -59,12 +67,30 @@ def analyze_screenshot_url(url: str) -> dict:
         return result
 
     try:
+        validate_remote_url(url)
         resp = requests.get(url, timeout=10, stream=True)
         resp.raise_for_status()
+
+        content_type = resp.headers.get("Content-Type", "").split(";", 1)[0].lower()
+        if content_type and content_type not in SUPPORTED_CONTENT_TYPES:
+            raise ValueError(f"Unsupported content type: {content_type}")
+
+        content_length = resp.headers.get("Content-Length")
+        if content_length and int(content_length) > MAX_DOWNLOAD_BYTES:
+            raise ValueError(f"Screenshot exceeds {MAX_DOWNLOAD_BYTES // (1024 * 1024)} MB limit")
+
+        content = bytearray()
+        for chunk in resp.iter_content(chunk_size=64 * 1024):
+            if not chunk:
+                continue
+            content.extend(chunk)
+            if len(content) > MAX_DOWNLOAD_BYTES:
+                raise ValueError(f"Screenshot exceeds {MAX_DOWNLOAD_BYTES // (1024 * 1024)} MB limit")
+
         result["accessible"] = True
 
         if HAS_PIL:
-            img = Image.open(BytesIO(resp.content))
+            img = Image.open(BytesIO(content))
             result["width"] = img.width
             result["height"] = img.height
             result["format"] = img.format
@@ -126,7 +152,7 @@ def analyze_screenshot_set(screenshots: list[dict], platform: str) -> dict:
         })
 
     report["recommendations"].append("Ensure first 3 screenshots tell a complete value story.")
-    report["recommendations"].append("Add text captions to screenshots (iOS indexes caption text since June 2025).")
+    report["recommendations"].append("Add clear, readable screenshot captions that improve conversion and support discoverability.")
     report["recommendations"].append("Localize screenshot text for each target market.")
 
     return report

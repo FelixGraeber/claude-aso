@@ -16,7 +16,7 @@
 - **Count**: Up to 10 per device size
 - **Format**: PNG or JPEG, no alpha
 - **Search visibility**: First 3 screenshots appear in search results — MOST CRITICAL
-- **Caption OCR (June 2025)**: Text overlays on screenshots are now indexed by Apple's search algorithm
+- **Caption text**: Keep screenshot captions readable, benefit-led, and localized. Treat discoverability impact as secondary to conversion unless you have current store evidence for your market.
 
 ### App Preview Video
 - **Duration**: 15-30 seconds

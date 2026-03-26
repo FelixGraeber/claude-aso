@@ -53,7 +53,7 @@ Evaluate the sequence:
 - At least iPhone 6.7" or 6.9" screenshots present
 - iPad screenshots present (if universal app)
 - App preview video: 15-30s, actual app footage, correct resolution
-- Caption text: consider OCR indexing (June 2025 update)
+- Caption text: keep it readable, benefit-led, and localized
 
 ### Android
 - Screenshots meet 320px min, 3840px max

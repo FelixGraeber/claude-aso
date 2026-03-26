@@ -2,7 +2,7 @@
 name: aso-audit
 description: >
   Full app listing audit with parallel subagent delegation. Scores listing
-  across 7 categories (0-100), flags problems, generates prioritized action plan.
+  across core ASO categories (0-100), flags problems, generates prioritized action plan.
   Works in local mode (auto-detect Fastlane/Xcode/Gradle metadata) or remote
   mode (fetch live listing by app ID). Triggers on: "audit", "full ASO check",
   "analyze my app", "listing health check".
@@ -12,7 +12,7 @@ argument-hint: "[app-id-or-url] [--country CODE]"
 
 # ASO Audit — Full Listing Analysis
 
-Comprehensive app listing audit that spawns 7-9 specialized subagents in parallel.
+Comprehensive app listing audit that spawns 7 core specialist agents in parallel, adds localization when relevant, and finishes with a compliance gate.
 
 ## Modes
 

@@ -3,9 +3,9 @@
 ## Indexed Fields (Impact Search Rankings)
 
 ### Title
-- **Limit**: 50 characters
+- **Limit**: 30 characters
 - **Indexed**: YES — highest weight
-- **Rules**: Google's NLP analyzes semantic meaning, not just exact match. More space than iOS (50 vs 30). No keyword stuffing — Google penalizes unnatural titles.
+- **Rules**: Google's NLP analyzes semantic meaning, not just exact match. No keyword stuffing — Google penalizes unnatural titles.
 - **Strategy**: Brand + primary keyword phrase. Use natural language.
 
 ### Short Description

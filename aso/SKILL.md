@@ -176,7 +176,7 @@ These rules are ALWAYS enforced — never recommend violations:
 
 | Field | Limit | Indexed? | Notes |
 |-------|-------|----------|-------|
-| Title | 50 chars | YES (high weight) | More space than iOS |
+| Title | 30 chars | YES (high weight) | Treat every character as premium space |
 | Short Description | 80 chars | YES | Visible in some views |
 | Full Description | 4,000 chars | YES | Keyword density matters |
 | Developer Name | variable | YES (low) | Branding |

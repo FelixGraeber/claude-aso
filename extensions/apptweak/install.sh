@@ -1,9 +1,41 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SKILL_DIR="$HOME/.claude/skills"
-AGENT_DIR="$HOME/.claude/agents"
+SKILL_DIR="${SKILLS_HOME:-$HOME/.claude/skills}"
+AGENT_DIR="${AGENTS_HOME:-$HOME/.claude/agents}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ENV_FILE="${ASO_ENV_FILE:-$SKILL_DIR/aso/.env}"
+
+upsert_env_var() {
+    local key="$1"
+    local value="$2"
+    touch "$ENV_FILE"
+    chmod 600 "$ENV_FILE"
+    if grep -q "^${key}=" "$ENV_FILE"; then
+        python3 - "$ENV_FILE" "$key" "$value" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+key = sys.argv[2]
+value = sys.argv[3]
+lines = path.read_text().splitlines()
+updated = []
+replaced = False
+for line in lines:
+    if line.startswith(f"{key}="):
+        updated.append(f"{key}={value}")
+        replaced = True
+    else:
+        updated.append(line)
+if not replaced:
+    updated.append(f"{key}={value}")
+path.write_text("\n".join(updated) + "\n")
+PY
+    else
+        printf '%s=%s\n' "$key" "$value" >> "$ENV_FILE"
+    fi
+}
 
 echo "=== Installing AppTweak Extension ==="
 
@@ -12,14 +44,16 @@ if [ ! -d "$SKILL_DIR/aso" ]; then
     exit 1
 fi
 
-read -rp "Enter your AppTweak API key: " API_KEY
+read -rsp "Enter your AppTweak API key: " API_KEY
+echo
 if [ -z "$API_KEY" ]; then
     echo "Error: API key is required"
     exit 1
 fi
 
-echo "APPTWEAK_API_KEY=$API_KEY" >> "$SKILL_DIR/aso/.env"
-echo "API key saved to $SKILL_DIR/aso/.env"
+mkdir -p "$(dirname "$ENV_FILE")"
+upsert_env_var "APPTWEAK_API_KEY" "$API_KEY"
+echo "API key saved to $ENV_FILE"
 
 mkdir -p "$SKILL_DIR/aso-apptweak"
 cp "$SCRIPT_DIR/skills/aso-apptweak/SKILL.md" "$SKILL_DIR/aso-apptweak/"

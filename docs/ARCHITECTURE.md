@@ -7,10 +7,10 @@ Layer 1: Main Skill (aso/SKILL.md)
   → Entry point, routing, platform detection, scoring methodology
 
 Layer 2: Sub-Skills (skills/aso-*/SKILL.md)
-  → 13 specialized skills, independently invocable
+  → 14 specialized skills, independently invocable
 
 Layer 3: Agents (agents/aso-*.md)
-  → 9 parallel subagents, spawned during audits
+  → 10 specialist agents
 ```
 
 ## Data Flow
@@ -28,6 +28,9 @@ User: /aso audit <app-id>
   ├── [Parallel] Agent: aso-competitors
   ├── [Parallel] Agent: aso-technical
   ├── [Parallel] Agent: aso-conversion
+  ├── [Conditional] Agent: aso-localization
+  │
+  ├── [Sequential] Agent: aso-compliance
   │
   └── Aggregate → ASO Health Score → Reports
 ```

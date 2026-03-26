@@ -112,7 +112,7 @@ Return structured report:
 - Full description: no testimonials, no ratings, no pricing, no performance stats
 - No keyword stuffing (>3% density for any single keyword)
 - Screenshots: no prohibited text overlays
-- Financial features declaration (mandatory since Oct 2025)
+- Financial features declarations and other policy forms completed when the app exposes regulated functionality
 - Health disclaimers (if health category)
 - AI content reporting (if AI features)
 

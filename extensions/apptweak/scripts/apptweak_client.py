@@ -10,6 +10,8 @@ Usage:
     python apptweak_client.py competitors id284882215 --json
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -20,6 +22,15 @@ import requests
 
 BASE_URL = "https://api.apptweak.com"
 TIMEOUT = 15
+DEFAULT_ENV_PATH = Path.home() / ".claude" / "skills" / "aso" / ".env"
+
+
+def get_env_path() -> Path:
+    """Return the credential file path when file-based auth is used."""
+    env_path = os.environ.get("ASO_ENV_FILE")
+    if env_path:
+        return Path(env_path).expanduser()
+    return DEFAULT_ENV_PATH
 
 
 def load_api_key() -> str:
@@ -28,18 +39,14 @@ def load_api_key() -> str:
     if key:
         return key
 
-    env_paths = [
-        Path.home() / ".claude" / "skills" / "aso" / ".env",
-        Path(".env"),
-    ]
-    for env_path in env_paths:
-        if env_path.exists():
-            for line in env_path.read_text().splitlines():
-                if line.startswith("APPTWEAK_API_KEY="):
-                    return line.split("=", 1)[1].strip()
+    env_path = get_env_path()
+    if env_path.exists():
+        for line in env_path.read_text().splitlines():
+            if line.startswith("APPTWEAK_API_KEY="):
+                return line.split("=", 1)[1].strip()
 
     raise ValueError(
-        "APPTWEAK_API_KEY not found. Set it as an environment variable or in ~/.claude/skills/aso/.env"
+        "APPTWEAK_API_KEY not found. Set it as an environment variable or in the ASO env file"
     )
 
 

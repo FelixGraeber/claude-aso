@@ -37,7 +37,7 @@ Listing JSON with screenshot URLs, icon URL, platform identifier.
 
 ## Key Checks
 - iOS: Are first 3 screenshots compelling? (they show in search results)
-- iOS: Do screenshot captions contain keywords? (OCR indexed since June 2025)
+- iOS: Do screenshot captions clearly communicate value and remain readable at thumbnail size?
 - Android: Is feature graphic present? (1024x500)
 - Both: Are screenshots localized per market?
 - Both: Consistent visual style across sequence?

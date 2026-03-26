@@ -8,21 +8,61 @@ Usage:
     python detect_project.py [--path DIR] --json
 """
 
+from __future__ import annotations
+
 import argparse
+import fnmatch
 import json
 import os
 import re
 import sys
 from pathlib import Path
 
+IGNORED_DIR_NAMES = {
+    ".git",
+    ".hg",
+    ".idea",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "build",
+    "DerivedData",
+    "dist",
+    "node_modules",
+    "Pods",
+    "vendor",
+}
+MAX_SCAN_DEPTH = 6
+
 
 def find_files(root: Path, patterns: list[str]) -> dict[str, Path]:
-    """Find first match for each glob pattern."""
-    found = {}
-    for pattern in patterns:
-        matches = sorted(root.glob(pattern))
-        if matches:
-            found[pattern] = matches[0]
+    """Find first match for each glob pattern without crawling known large directories."""
+    found: dict[str, Path] = {}
+    remaining = set(patterns)
+
+    for current_root, dirnames, filenames in os.walk(root):
+        current_path = Path(current_root)
+        rel_path = current_path.relative_to(root)
+        depth = len(rel_path.parts)
+
+        dirnames[:] = [
+            dirname
+            for dirname in dirnames
+            if dirname not in IGNORED_DIR_NAMES and depth < MAX_SCAN_DEPTH
+        ]
+
+        candidates = [current_path / dirname for dirname in dirnames]
+        candidates.extend(current_path / filename for filename in filenames)
+
+        for candidate in sorted(candidates):
+            relative = candidate.relative_to(root).as_posix()
+            for pattern in sorted(list(remaining)):
+                if fnmatch.fnmatch(relative, pattern):
+                    found[pattern] = candidate
+                    remaining.remove(pattern)
+        if not remaining:
+            break
+
     return found
 
 

@@ -36,7 +36,7 @@ Structured listing JSON with all metadata fields, platform identifier.
 | iOS | Keywords | 100 | Yes |
 | iOS | Description | 4000 | NO |
 | iOS | Promotional Text | 170 | NO |
-| Android | Title | 50 | Yes |
+| Android | Title | 30 | Yes |
 | Android | Short Description | 80 | Yes |
 | Android | Full Description | 4000 | Yes |
 

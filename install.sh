@@ -2,8 +2,8 @@
 set -euo pipefail
 
 SKILL_NAME="claude-aso"
-SKILL_DIR="$HOME/.claude/skills"
-AGENT_DIR="$HOME/.claude/agents"
+SKILL_DIR="${SKILLS_HOME:-$HOME/.claude/skills}"
+AGENT_DIR="${AGENTS_HOME:-$HOME/.claude/agents}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 echo "=== Installing $SKILL_NAME ==="
@@ -62,7 +62,7 @@ fi
 echo ""
 echo "=== $SKILL_NAME installed successfully ==="
 echo ""
-echo "Usage: Type /aso in Claude Code to get started"
+echo "Usage: Type /aso in your skill-compatible agent to get started"
 echo "       /aso audit               Auto-detect local project metadata"
 echo "       /aso audit <app-id>      Audit a live listing or competitor"
 echo "       /aso keywords <seeds>    Keyword research"

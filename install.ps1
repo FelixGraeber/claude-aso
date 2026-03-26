@@ -1,16 +1,21 @@
 $ErrorActionPreference = "Stop"
 
 $SkillName = "claude-aso"
-$SkillDir = "$env:USERPROFILE\.claude\skills"
-$AgentDir = "$env:USERPROFILE\.claude\agents"
+$SkillDir = if ($env:SKILLS_HOME) { $env:SKILLS_HOME } else { "$env:USERPROFILE\.claude\skills" }
+$AgentDir = if ($env:AGENTS_HOME) { $env:AGENTS_HOME } else { "$env:USERPROFILE\.claude\agents" }
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 Write-Host "=== Installing $SkillName ==="
 
 # Check prerequisites
-$pythonVersion = python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" 2>$null
+$pythonVersion = python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" 2>$null
 if (-not $pythonVersion) {
     Write-Error "Python 3.12+ required"
+    exit 1
+}
+$pythonMajor, $pythonMinor = $pythonVersion.Split(".")
+if ([int]$pythonMajor -lt 3 -or ([int]$pythonMajor -eq 3 -and [int]$pythonMinor -lt 12)) {
+    Write-Error "Python 3.12+ required (found $pythonVersion)"
     exit 1
 }
 
@@ -47,9 +52,9 @@ Copy-Item "$ScriptDir\scripts\*.py" "$SkillDir\aso\scripts\"
 
 # Install Python dependencies
 Write-Host "Installing Python dependencies..."
-pip3 install --user -r "$ScriptDir\requirements.txt"
+python -m pip install --user -r "$ScriptDir\requirements.txt"
 
 Write-Host ""
 Write-Host "=== $SkillName installed successfully ==="
 Write-Host ""
-Write-Host "Usage: Type /aso in Claude Code to get started"
+Write-Host "Usage: Type /aso in your skill-compatible agent to get started"

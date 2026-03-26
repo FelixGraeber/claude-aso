@@ -17,7 +17,7 @@ Fetch live ASO data from AppTweak API to enrich audit findings with real metrics
 3. Identify competitors via AppTweak's similarity engine
 4. Pull historical ranking data for trend analysis
 5. Fetch and analyze recent reviews
-6. Track credit usage and warn before exceeding budget
+6. Surface API usage costs so the caller can budget requests deliberately
 
 ## API Client
 All calls go through `scripts/apptweak_client.py` which handles authentication and error handling.

@@ -10,6 +10,8 @@ Usage:
     python asc_client.py ratings <app-id> --json
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -27,6 +29,15 @@ except ImportError:
 
 BASE_URL = "https://api.appstoreconnect.apple.com/v1"
 TIMEOUT = 15
+DEFAULT_ENV_PATH = Path.home() / ".claude" / "skills" / "aso" / ".env"
+
+
+def get_env_path() -> Path:
+    """Return the credential file path when file-based auth is used."""
+    env_path = os.environ.get("ASO_ENV_FILE")
+    if env_path:
+        return Path(env_path).expanduser()
+    return DEFAULT_ENV_PATH
 
 
 def load_credentials() -> dict:
@@ -38,23 +49,19 @@ def load_credentials() -> dict:
     }
 
     if not all(creds.values()):
-        env_paths = [
-            Path.home() / ".claude" / "skills" / "aso" / ".env",
-            Path(".env"),
-        ]
-        for env_path in env_paths:
-            if env_path.exists():
-                for line in env_path.read_text().splitlines():
-                    if "=" in line:
-                        key, val = line.split("=", 1)
-                        key = key.strip()
-                        val = val.strip()
-                        if key == "ASC_KEY_ID" and not creds["key_id"]:
-                            creds["key_id"] = val
-                        elif key == "ASC_ISSUER_ID" and not creds["issuer_id"]:
-                            creds["issuer_id"] = val
-                        elif key == "ASC_KEY_PATH" and not creds["key_path"]:
-                            creds["key_path"] = val
+        env_path = get_env_path()
+        if env_path.exists():
+            for line in env_path.read_text().splitlines():
+                if "=" in line:
+                    key, val = line.split("=", 1)
+                    key = key.strip()
+                    val = val.strip()
+                    if key == "ASC_KEY_ID" and not creds["key_id"]:
+                        creds["key_id"] = val
+                    elif key == "ASC_ISSUER_ID" and not creds["issuer_id"]:
+                        creds["issuer_id"] = val
+                    elif key == "ASC_KEY_PATH" and not creds["key_path"]:
+                        creds["key_path"] = val
 
     missing = [k for k, v in creds.items() if not v]
     if missing:

@@ -9,6 +9,8 @@ Usage:
     echo '[{"text": "Great app!", "rating": 5}]' | python review_analyzer.py --stdin --json
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import re

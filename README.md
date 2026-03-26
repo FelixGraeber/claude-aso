@@ -1,6 +1,6 @@
-# Claude ASO — App Store Optimization for Claude Code, Codex & Co.
+# Claude ASO — App Store Optimization Skill Pack
 
-Comprehensive App Store Optimization skill for Claude Code, Codex, Cursor, and any AI agent that supports skills. Analyzes iOS App Store and Google Play listings using parallel subagents across 7 categories, producing an ASO Health Score (0-100) and prioritized action plan.
+Comprehensive App Store Optimization skill pack for Claude-style skill and agent runtimes. Analyzes iOS App Store and Google Play listings across core ASO categories, producing an ASO Health Score (0-100) and prioritized action plan.
 
 Inspired by [AgriciDaniel/claude-seo](https://github.com/AgriciDaniel/claude-seo) — adapted from SEO website analysis to ASO mobile app optimization with the same parallel subagent architecture.
 
@@ -8,8 +8,8 @@ Inspired by [AgriciDaniel/claude-seo](https://github.com/AgriciDaniel/claude-seo
 
 - **Local-first**: run `/aso audit` inside your app project — auto-detects Fastlane metadata, Xcode, or Gradle and audits pre-submission metadata
 - **Remote audit**: run `/aso audit <app-id>` to audit any live listing or competitor
-- **13 specialized sub-skills**: keywords, metadata, visuals, reviews, competitors, localization, A/B testing, technical, conversion, planning, launch, seasonal
-- **9 parallel subagents**: full audit spawns agents simultaneously for fast analysis
+- **14 specialized sub-skills**: audit, compliance, keywords, metadata, visuals, reviews, competitors, localization, A/B testing, technical, conversion, planning, launch, seasonal
+- **10 specialist agents**: the audit runs 7 core agents in parallel, adds localization when needed, then runs compliance as a final gate
 - **Platform-aware**: auto-detects iOS vs Android, applies correct rules (character limits, indexing behavior, A/B testing capabilities)
 - **Quality gates**: prevents bad recommendations (no keyword stuffing, respects char limits, iOS description not indexed)
 - **Extension system**: optional AppTweak and App Store Connect API integrations
@@ -30,7 +30,7 @@ cd claude-aso
 bash install.sh
 ```
 
-Then in Claude Code / Codex / Cursor:
+Then in your skill-compatible agent:
 
 ```
 /aso audit                      # Auto-detect local project metadata
@@ -57,6 +57,7 @@ Then in Claude Code / Codex / Cursor:
 | `/aso ab-testing <app-id>` | A/B test design |
 | `/aso technical <app-id>` | Technical health check |
 | `/aso conversion <app-id>` | Conversion rate optimization |
+| `/aso compliance` | Store policy check for current metadata |
 | `/aso plan <category>` | Strategic ASO roadmap |
 | `/aso launch` | Pre-launch checklist using local project state |
 | `/aso seasonal <app-id>` | Seasonal keyword calendar |
@@ -78,8 +79,8 @@ Fastlane metadata provides the richest data (all store fields, all locales). Xco
 
 ```
 aso/SKILL.md              Main orchestrator (entry point)
-skills/aso-*/SKILL.md     13 specialized sub-skills
-agents/aso-*.md           9 parallel subagents
+skills/aso-*/SKILL.md     14 specialized sub-skills
+agents/aso-*.md           10 specialist agents
 references/*.md           Platform specs, quality gates
 scripts/*.py              Python utilities (fetch, parse, validate)
 extensions/               Optional API integrations
@@ -109,7 +110,7 @@ The audit produces a weighted ASO Health Score:
 ## Requirements
 
 - Python 3.12+
-- An AI agent that supports skills: [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Codex](https://openai.com/index/introducing-codex/), [Cursor](https://cursor.com), or any Agent Skills-compatible tool
+- A skill-compatible agent runtime. The install scripts default to `~/.claude`, but you can override the install locations with `SKILLS_HOME`, `AGENTS_HOME`, and `ASO_ENV_FILE`.
 - Optional: Playwright for visual analysis
 
 ## License

@@ -5,7 +5,7 @@
 | Command | Description |
 |---------|-------------|
 | `/aso` | Show command table and help |
-| `/aso audit <app-id>` | Full listing audit (7-9 parallel agents, health score) |
+| `/aso audit <app-id>` | Full listing audit (7 core parallel agents, optional localization, final compliance gate) |
 | `/aso keywords <seeds>` | Keyword research and placement strategy |
 | `/aso metadata <app-id>` | Metadata field analysis and rewrite suggestions |
 | `/aso visuals <app-id>` | Screenshot, icon, and video analysis |
@@ -15,6 +15,7 @@
 | `/aso ab-testing <app-id>` | A/B test design (iOS PPO / Android experiments) |
 | `/aso technical <app-id>` | Technical health (size, crashes, updates) |
 | `/aso conversion <app-id>` | Conversion rate optimization |
+| `/aso compliance <app-id>` | Store policy compliance review |
 | `/aso plan <category>` | Strategic ASO roadmap |
 | `/aso launch <app-id>` | Pre-launch and launch day strategy |
 | `/aso seasonal <app-id>` | Seasonal keyword opportunities |

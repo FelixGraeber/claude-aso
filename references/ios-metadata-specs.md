@@ -50,7 +50,7 @@
 - **Count**: Up to 10 per device size
 - **Device sizes**: iPhone 6.9", 6.7", 6.5", 5.5"; iPad Pro 13", 12.9"
 - **Search visibility**: First 3 screenshots shown in search results (CRITICAL)
-- **Caption OCR**: As of June 2025, Apple indexes text in screenshot captions for search. Treat captions as keyword-bearing fields.
+- **Screenshot captions**: Optimize primarily for clarity and conversion. If you have current evidence that screenshot text affects discoverability in your market, treat it as a secondary keyword-bearing surface.
 
 ### App Preview Video
 - **Duration**: 15-30 seconds

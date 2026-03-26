@@ -12,25 +12,12 @@ Usage:
 
 import argparse
 import json
-import re
 import sys
 
-LIMITS = {
-    "ios": {
-        "title": 30,
-        "subtitle": 30,
-        "keywords": 100,
-        "description": 4000,
-        "promotional_text": 170,
-        "whats_new": 4000,
-    },
-    "android": {
-        "title": 50,
-        "short_description": 80,
-        "full_description": 4000,
-        "whats_new": 500,
-    },
-}
+try:
+    from scripts.store_specs import LIMITS
+except ModuleNotFoundError:
+    from store_specs import LIMITS
 
 
 def validate_field(value: str, limit: int) -> dict:

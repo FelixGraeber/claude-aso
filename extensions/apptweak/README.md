@@ -14,7 +14,7 @@ bash extensions/apptweak/install.sh
 
 This will:
 1. Prompt for your AppTweak API key
-2. Store it in `~/.claude/skills/aso/.env`
+2. Store it in the ASO env file (`$ASO_ENV_FILE` or the default install location)
 3. Install the AppTweak skill and agent
 4. Install Python dependencies
 
@@ -30,10 +30,5 @@ This will:
 
 ## API Key Management
 
-The API key is stored in `~/.claude/skills/aso/.env` as `APPTWEAK_API_KEY`.
+Prefer the `APPTWEAK_API_KEY` environment variable. The installer can also write it to the ASO env file with `0600` permissions.
 Monthly credit budget: 25,000 credits on Pro plan.
-
-## Credit Usage
-
-Monitor your credit usage. Each API call consumes credits. The client tracks
-cumulative usage per session and warns when approaching limits.

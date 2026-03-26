@@ -1,6 +1,6 @@
 # App Store Connect Extension for Skill ASO
 
-Integrates Apple's App Store Connect API for direct metadata management, review fetching, and analytics access.
+Integrates Apple's App Store Connect API for metadata, review, and version lookups.
 
 ## Prerequisites
 - Apple Developer Program membership
@@ -15,7 +15,7 @@ bash extensions/app-store-connect/install.sh
 
 This will:
 1. Prompt for Key ID, Issuer ID, and .p8 key file path
-2. Store credentials in `~/.claude/skills/aso/.env`
+2. Store credentials in the ASO env file (`$ASO_ENV_FILE` or the default install location)
 3. Install the ASC skill and agent
 4. Install Python dependencies (PyJWT)
 
@@ -24,7 +24,6 @@ This will:
 | Command | Description |
 |---------|-------------|
 | `/aso asc metadata <app-id>` | Fetch current metadata from App Store Connect |
-| `/aso asc keywords <app-id>` | Fetch current keywords field |
 | `/aso asc reviews <app-id>` | Fetch customer reviews |
 | `/aso asc ratings <app-id>` | Fetch rating data and distribution |
 | `/aso asc versions <app-id>` | List app versions and their states |
@@ -32,6 +31,6 @@ This will:
 ## Authentication
 
 Uses JWT-based authentication per Apple's requirements:
-- Key ID and Issuer ID stored in `.env`
-- Private key (.p8) file path stored in `.env`
+- Prefer `ASC_KEY_ID`, `ASC_ISSUER_ID`, and `ASC_KEY_PATH` environment variables
+- The installer can persist them to the ASO env file with `0600` permissions
 - Tokens are generated per request (20-minute expiry)

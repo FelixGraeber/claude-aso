@@ -1,15 +1,15 @@
-# Claude ASO — App Store Optimization for Claude Code
+# Claude ASO — App Store Optimization Skill Pack
 
 ## Overview
 
-Comprehensive ASO skill for iOS App Store and Google Play. 13 sub-skills, 9 parallel subagents, extensible API integrations. Follows the claude-seo 3-layer architecture (directive → orchestration → execution).
+Comprehensive ASO skill pack for iOS App Store and Google Play. 14 sub-skills, 10 specialist agents, extensible API integrations. Follows the claude-seo 3-layer architecture (directive → orchestration → execution).
 
 ## Architecture
 
 ```
 aso/SKILL.md          → Main orchestrator (entry point, routing, scoring)
-skills/aso-*/SKILL.md → 13 specialized sub-skills (independently invocable)
-agents/aso-*.md       → 9 parallel subagents (spawned during audits)
+skills/aso-*/SKILL.md → 14 specialized sub-skills (independently invocable)
+agents/aso-*.md       → 10 specialist agents
 references/*.md       → On-demand knowledge (metadata specs, quality gates)
 scripts/*.py          → Python utilities (fetch, parse, validate, analyze)
 extensions/           → Optional API integrations (AppTweak, App Store Connect)

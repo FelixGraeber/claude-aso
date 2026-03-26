@@ -21,7 +21,6 @@ Provides live ASO data from AppTweak's API. Requires API key stored in `.env`.
 | `/aso apptweak competitors <app-id>` | Similar apps with keyword overlap scores |
 | `/aso apptweak timeline <app-id>` | Historical ranking data |
 | `/aso apptweak reviews <app-id>` | Recent reviews with sentiment analysis |
-| `/aso apptweak category <category-id>` | Category top charts |
 
 ## Usage
 
@@ -32,11 +31,7 @@ uv run python scripts/apptweak_client.py <command> <args> --json
 
 ## Authentication
 
-API key loaded from `~/.claude/skills/aso/.env` as `APPTWEAK_API_KEY`.
-
-## Credit Tracking
-
-Each call logs credit usage. Session total tracked. Warn at 80% of monthly budget.
+API key loaded from `APPTWEAK_API_KEY` or the ASO env file.
 
 ## Available Tools
 Read, Bash, Write, Glob, Grep

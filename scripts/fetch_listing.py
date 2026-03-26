@@ -12,14 +12,20 @@ Examples:
     python fetch_listing.py "https://apps.apple.com/app/id284882215"
 """
 
+from __future__ import annotations
+
 import argparse
-import ipaddress
 import json
 import re
 import sys
 from urllib.parse import urlparse
 
 import requests
+
+try:
+    from scripts.network_security import validate_remote_url
+except ModuleNotFoundError:
+    from network_security import validate_remote_url
 
 
 TIMEOUT = 15
@@ -29,17 +35,28 @@ USER_AGENT = (
 )
 
 
+ALLOWED_STORE_HOSTS = {
+    "apps.apple.com",
+    "itunes.apple.com",
+    "play.google.com",
+}
+
+
 def detect_platform(identifier: str) -> tuple[str, str]:
     """Return (platform, app_id) from an identifier string."""
     identifier = identifier.strip()
+    parsed = urlparse(identifier)
 
-    if "apps.apple.com" in identifier:
+    if parsed.scheme and parsed.netloc:
+        validate_remote_url(identifier, allowed_hosts=ALLOWED_STORE_HOSTS)
+
+    if parsed.hostname == "apps.apple.com":
         match = re.search(r"id(\d+)", identifier)
         if match:
             return "ios", f"id{match.group(1)}"
         raise ValueError(f"Cannot extract iOS app ID from URL: {identifier}")
 
-    if "play.google.com" in identifier:
+    if parsed.hostname == "play.google.com":
         match = re.search(r"id=([a-zA-Z0-9_.]+)", identifier)
         if match:
             return "android", match.group(1)
@@ -58,17 +75,6 @@ def detect_platform(identifier: str) -> tuple[str, str]:
         f"Cannot detect platform from '{identifier}'. "
         "Use iOS format (id123456789) or Android format (com.example.app)"
     )
-
-
-def is_private_ip(hostname: str) -> bool:
-    """SSRF protection: block private/internal IPs."""
-    try:
-        ip = ipaddress.ip_address(hostname)
-        return ip.is_private or ip.is_loopback or ip.is_reserved
-    except ValueError:
-        return False
-
-
 def fetch_ios_listing(app_id: str, country: str = "us") -> dict:
     """Fetch iOS app listing via iTunes Lookup API + web scraping."""
     numeric_id = app_id.replace("id", "")
@@ -125,10 +131,7 @@ def fetch_ios_listing(app_id: str, country: str = "us") -> dict:
 def fetch_android_listing(package_name: str, country: str = "us") -> dict:
     """Fetch Android app listing by scraping Google Play web page."""
     url = f"https://play.google.com/store/apps/details?id={package_name}&hl=en&gl={country}"
-
-    parsed = urlparse(url)
-    if is_private_ip(parsed.hostname or ""):
-        return {"error": "SSRF blocked: private IP", "platform": "android", "app_id": package_name}
+    validate_remote_url(url, allowed_hosts={"play.google.com"})
 
     resp = requests.get(url, timeout=TIMEOUT, headers={"User-Agent": USER_AGENT})
     if resp.status_code == 404:
