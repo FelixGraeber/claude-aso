@@ -9,8 +9,8 @@
 ## Quick Install (Unix/macOS)
 
 ```bash
-git clone https://github.com/felixgraeber/claude-aso.git
-cd claude-aso
+git clone https://github.com/felixgraeber/claude-aso-audit-skill.git
+cd claude-aso-audit-skill
 bash install.sh
 ```
 
@@ -23,8 +23,8 @@ SKILLS_HOME="$HOME/.codex/skills" AGENTS_HOME="$HOME/.codex/agents" bash install
 ## Quick Install (Windows)
 
 ```powershell
-git clone https://github.com/felixgraeber/claude-aso.git
-cd claude-aso
+git clone https://github.com/felixgraeber/claude-aso-audit-skill.git
+cd claude-aso-audit-skill
 .\install.ps1
 ```
 

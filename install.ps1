@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$SkillName = "claude-aso"
+$SkillName = "claude-aso-audit-skill"
 $SkillDir = if ($env:SKILLS_HOME) { $env:SKILLS_HOME } else { "$env:USERPROFILE\.claude\skills" }
 $AgentDir = if ($env:AGENTS_HOME) { $env:AGENTS_HOME } else { "$env:USERPROFILE\.claude\agents" }
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path

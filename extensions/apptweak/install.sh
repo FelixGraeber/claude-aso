@@ -40,7 +40,7 @@ PY
 echo "=== Installing AppTweak Extension ==="
 
 if [ ! -d "$SKILL_DIR/aso" ]; then
-    echo "Error: claude-aso must be installed first. Run install.sh from the root directory."
+    echo "Error: claude-aso-audit-skill must be installed first. Run install.sh from the root directory."
     exit 1
 fi
 

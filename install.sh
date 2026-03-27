@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SKILL_NAME="claude-aso"
+SKILL_NAME="claude-aso-audit-skill"
 SKILL_DIR="${SKILLS_HOME:-$HOME/.claude/skills}"
 AGENT_DIR="${AGENTS_HOME:-$HOME/.claude/agents}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"

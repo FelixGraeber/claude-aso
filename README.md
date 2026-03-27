@@ -1,4 +1,6 @@
-# Claude ASO — App Store Optimization Skill Pack
+# claude-aso-audit-skill
+
+Claude ASO — App Store Optimization Skill Pack
 
 Comprehensive App Store Optimization skill pack for Claude-style skill and agent runtimes. Analyzes iOS App Store and Google Play listings across core ASO categories, producing an ASO Health Score (0-100) and prioritized action plan.
 
@@ -19,14 +21,14 @@ Inspired by [AgriciDaniel/claude-seo](https://github.com/AgriciDaniel/claude-seo
 The easiest way: point your AI agent at this repo and ask it to set it up.
 
 ```
-Install https://github.com/felixgraeber/claude-aso and run an ASO audit on my app
+Install https://github.com/felixgraeber/claude-aso-audit-skill and run an ASO audit on my app
 ```
 
 Or install manually:
 
 ```bash
-git clone https://github.com/felixgraeber/claude-aso.git
-cd claude-aso
+git clone https://github.com/felixgraeber/claude-aso-audit-skill.git
+cd claude-aso-audit-skill
 bash install.sh
 ```
 

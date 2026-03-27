@@ -40,7 +40,7 @@ PY
 echo "=== Installing App Store Connect Extension ==="
 
 if [ ! -d "$SKILL_DIR/aso" ]; then
-    echo "Error: claude-aso must be installed first."
+    echo "Error: claude-aso-audit-skill must be installed first."
     exit 1
 fi
 

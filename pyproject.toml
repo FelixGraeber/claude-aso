@@ -1,5 +1,5 @@
 [project]
-name = "claude-aso"
+name = "claude-aso-audit-skill"
 version = "1.0.0"
 description = "Comprehensive App Store Optimization skill for Claude Code"
 requires-python = ">=3.12"
